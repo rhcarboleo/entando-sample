@@ -101,10 +101,6 @@
             <id>openshift</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
-                <!--<property>-->
-                <!--<name>env.MAVEN_WORKING_MODE</name>-->
-                <!--<value>openshift</value>-->
-                <!--</property>-->
             </activation>
             <properties>
                 <env>openshift</env>
@@ -119,12 +115,13 @@
                         <version>3.5.37</version>
                         <configuration>
                             <mode>openshift</mode>
+                            <resourceDir>src/main/fabric8/wildfly</resourceDir>
                             <images>
                                 <image>
-                                    <name>${project.groupId}/${project.artifactId}:${project.version}</name>
+                                    <name>%g/%a:%v</name>
                                     <alias>entando</alias>
                                     <build>
-                                        <from>entando/entando-wildfly-110:5.2</from>
+                                        <from>entando/entando-wildfly-110:5.0.0001</from>
                                         <assembly>
                                             <descriptorRef>project</descriptorRef>
                                         </assembly>
@@ -134,7 +131,7 @@
                                             <!--Ampie: let's consider using a service definition here - could also be external -->
                                             <PG_ENTANDO_PORT_DB_CONNECTION_STRING>${profile.database.url.portdb}</PG_ENTANDO_PORT_DB_CONNECTION_STRING>
                                             <PG_ENTANDO_SERV_DB_CONNECTION_STRING>${profile.database.url.servdb}</PG_ENTANDO_SERV_DB_CONNECTION_STRING>
-                                            <MAVEN_ARGS>package -Popenshift -DskipTests -B --no-snapshot-updates -Dmaven.repo.local=/opt/app-root/src/.m2/repository</MAVEN_ARGS>
+                                            <MAVEN_ARGS_APPEND>--no-snapshot-updates</MAVEN_ARGS_APPEND>
                                         </env>
                                     </build>
                                 </image>
@@ -159,16 +156,12 @@
             </build>
         </profile>
         <profile>
-            <id>postgres</id>
+            <id>postgresql</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
-                <!--<property>-->
-                <!--<name>env.MAVEN_WORKING_MODE</name>-->
-                <!--<value>openshift</value>-->
-                <!--</property>-->
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <env>postgres</env>
+                <env>postgresql</env>
                 <env.db.environment>production</env.db.environment>
                 <jboss></jboss>
             </properties>
@@ -183,10 +176,10 @@
                             <mode>openshift</mode>
                             <images>
                                 <image>
-                                    <name>${project.groupId}/${project.artifactId}-db:${project.version}</name>
-                                    <alias>entando</alias>
+                                    <name>%g/%a-db:%v</name>
+                                    <alias>entando-db</alias>
                                     <build>
-                                        <from>entando/entando-postgres-95:5.5</from>
+                                        <from>entando/entando-postgres-95:5.0.0001</from>
                                         <assembly>
                                             <descriptorRef>project</descriptorRef>
                                         </assembly>
