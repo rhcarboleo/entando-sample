@@ -1,4 +1,3 @@
-
 oc login -u system:admin
 oc project myproject
 oc delete deploymentconfig entando-sample-db

@@ -121,7 +121,7 @@
                                     <name>%g/%a:%v</name>
                                     <alias>entando</alias>
                                     <build>
-                                        <from>entando/entando-wildfly-110:5.0.0001</from>
+                                        <from>ampie/entando-s2i-wildfly-11:4.3.2</from>
                                         <assembly>
                                             <descriptorRef>project</descriptorRef>
                                         </assembly>
@@ -179,7 +179,7 @@
                                     <name>%g/%a-db:%v</name>
                                     <alias>entando-db</alias>
                                     <build>
-                                        <from>entando/entando-postgres-95:5.0.0001</from>
+                                        <from>ampie/entando-s2i-postgresql-95:4.3.2</from>
                                         <assembly>
                                             <descriptorRef>project</descriptorRef>
                                         </assembly>
