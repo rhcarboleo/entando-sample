@@ -142,8 +142,8 @@
                   <name>%g/%a:%v</name>
                   <alias>entando</alias>
                   <build>
-                    <!--<from>entando/entando-fabric8s2i-wildfly-12:5.0.1</from>-->
-                    <from>entando/entando-fabric8s2i-eap-71:5.0.1</from>
+                    <!--<from>entando/entando-fabric8s2i-wildfly-12:5.0.0</from>-->
+                    <from>entando/entando-fabric8s2i-eap-71:5.0.0</from>
                     <assembly>
                       <descriptorRef>project</descriptorRef>
                     </assembly>
@@ -213,7 +213,7 @@
                   <name>%g/%a:%v</name>
                   <alias>entando-postgresql</alias>
                   <build>
-                    <from>entando/entando-fabric8s2i-postgresql-95:5.0.1</from>
+                    <from>entando/entando-fabric8s2i-postgresql-95:5.0.0</from>
                     <assembly>
                       <descriptorRef>project</descriptorRef>
                     </assembly>

@@ -27,8 +27,8 @@ function pull_docker_images(){
     echo_header "Pulling Docker Images"
     docker pull registry.access.redhat.com/rhpam-7/rhpam70-businesscentral-openshift:1.0
     docker pull registry.access.redhat.com/rhpam-7/rhpam70-kieserver-openshift:1.0
-    #docker pull entando/entando-fabric8s2i-eap-71:5.0.1
-    #docker pull entando/entando-fabric8s2i-postgresql-95:5.0.1
+    #docker pull entando/entando-fabric8s2i-eap-71:5.0.0
+    #docker pull entando/entando-fabric8s2i-postgresql-95:5.0.0
 }
 
 function create_secrets_and_linked_service_accounts() {
@@ -86,6 +86,16 @@ EOF
 
 function create_kie_application() {
     echo_header "Creating Process Automation Manager 7 Application config."
+    oc delete  services "$(get_property application.name)-rhpamcentr" 2> /dev/null
+    oc delete  services "$(get_property application.name)-kieserver" 2> /dev/null
+    oc delete  routes "$(get_property application.name)-rhpamcentr" 2> /dev/null
+    oc delete  routes "secure-$(get_property application.name)-rhpamcentr" 2> /dev/null
+    oc delete  routes "$(get_property application.name)-kieserver" 2> /dev/null
+    oc delete  routes "secure-$(get_property application.name)-kieserver" 2> /dev/null
+    oc delete  deploymentconfigs "$(get_property application.name)-rhpamcentr" 2> /dev/null
+    oc delete  deploymentconfigs "$(get_property application.name)-kieserver" 2> /dev/null
+    oc delete  persistentvolumeclaims "$(get_property application.name)-rhpamcentr-claim" 2> /dev/null
+    oc delete  persistentvolumeclaims "$(get_property application.name)-h2-claim" 2> /dev/null
 
     oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.0.0.GA/templates/rhpam70-authoring.yaml \
             -p APPLICATION_NAME="$(get_property application.name)" \
@@ -105,20 +115,22 @@ function create_kie_application() {
 
 }
 function create_entando_application(){
-    echo_header "Creating Entando 5 Application config."
-    oc delete service "entando-sample"
-    oc delete service "secure-entando-sample"
-    oc delete service "entando-sample-postgresql"
-    oc delete service "entando-sample-ping"
-    oc delete route "entando-sample"
-    oc delete route "secure-entando-sample"
-    oc delete imagestream "entando-sample-postgresql"
-    oc delete buildconfig "entando-sample"
-    oc delete buildconfig "entando-sample-postgresql"
-    oc delete deploymentconfig "entando-sample-postgresql"
-    oc delete persistentvolumeclaim "entando-sample-postgresql-claim"
-    oc delete imagestream "entando-sample"
-    oc delete deploymentconfig "entando-sample"
+    echo_header "Creating Entando 5 Application config." 2> /dev/null
+    oc delete service "$(get_property application.name)" 2> /dev/null
+    oc delete service "secure-$(get_property application.name)" 2> /dev/null
+    oc delete service "$(get_property application.name)-postgresql" 2> /dev/null
+    oc delete service "$(get_property application.name)-ping" 2> /dev/null
+    oc delete route "$(get_property application.name)" 2> /dev/null
+    oc delete route "secure-$(get_property application.name)" 2> /dev/null
+    oc delete imagestream "$(get_property application.name)-postgresql" 2> /dev/null
+    oc delete buildconfig "$(get_property application.name)" 2> /dev/null
+    oc delete buildconfig "$(get_property application.name)-postgresql" 2> /dev/null
+    oc delete deploymentconfig "$(get_property application.name)-postgresql" 2> /dev/null
+    oc delete persistentvolumeclaim "$(get_property application.name)-postgresql-claim" 2> /dev/null
+    oc delete imagestream "$(get_property application.name)" 2> /dev/null
+    oc delete deploymentconfig "$(get_property application.name)" 2> /dev/null
+    oc delete bc "$(get_property application.name)-s2i" 2> /dev/null
+    oc delete bc "$(get_property application.name)-postgresql-s2i" 2> /dev/null
 
     oc process -f $ENTANDO_OPS_HOME/Openshift/templates/entando-eap-71-with-postgresql-95.yml \
             -p SOURCE_REPOSITORY_URL=$(git remote -v | grep -oP "(?<=origin\s).+(?=\s\(fetch\)$)") \
@@ -134,9 +146,9 @@ function create_entando_application(){
 #            -p MAVEN_MIRROR_URL="$( oc describe route nexus -n openshift|grep -oP "(?<=Requested\sHost:\t\t)[^ ]+")" \
 }
 
-
-#import_imagestreams
-#pull_docker_images
-#create_secrets_and_linked_service_accounts
-#create_kie_application
+source $(dirname $0)/set_openshift_project.sh
+import_imagestreams
+pull_docker_images
+create_secrets_and_linked_service_accounts
+create_kie_application
 create_entando_application
