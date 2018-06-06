@@ -142,7 +142,8 @@
                   <name>%g/%a:%v</name>
                   <alias>entando</alias>
                   <build>
-                    <from>entando/entando-fabric8s2i-wildfly-12:${entando.version}</from>
+                    <!--<from>entando/entando-fabric8s2i-wildfly-12:5.0.1</from>-->
+                    <from>entando/entando-fabric8s2i-eap-71:5.0.1</from>
                     <assembly>
                       <descriptorRef>project</descriptorRef>
                     </assembly>
@@ -160,7 +161,7 @@
               <resources>
                 <services>
                   <service>
-                    <name>${profile.application.name}-service</name>
+                    <name>${profile.application.name}</name>
                     <expose>true</expose>
                     <ports>
                       <port>
@@ -183,7 +184,7 @@
       </activation>
 
       <properties>
-        <fabric8.suffix>-db</fabric8.suffix>
+        <fabric8.suffix>-postgresql</fabric8.suffix>
         <env>postgresql</env>
         <env.db.environment>production</env.db.environment>
         <jboss></jboss>
@@ -204,14 +205,15 @@
                   </execution>
               </executions>
             <configuration>
+              <generateRoute>false</generateRoute>
               <resourceDir>src/main/fabric8/postgresql</resourceDir>
               <mode>openshift</mode>
               <images>
                 <image>
                   <name>%g/%a:%v</name>
-                  <alias>entando-db</alias>
+                  <alias>entando-postgresql</alias>
                   <build>
-                    <from>entando/entando-fabric8s2i-postgresql-95:${entando.version}</from>
+                    <from>entando/entando-fabric8s2i-postgresql-95:5.0.1</from>
                     <assembly>
                       <descriptorRef>project</descriptorRef>
                     </assembly>
@@ -224,6 +226,9 @@
                       <POSTGRESQL_PASSWORD>${profile.database.password}</POSTGRESQL_PASSWORD>
                       <POSTGRESQL_DATABASE>${profile.database.name.portdb}</POSTGRESQL_DATABASE>
                       <POSTGRESQL_DATABASE2>${profile.database.name.servdb}</POSTGRESQL_DATABASE2>
+                      <PAM_URL>https://my.domain.com/kie-server</PAM_URL>
+                      <PAM_USERNAME>ampie</PAM_USERNAME>
+                      <PAM_PASSWORD>password!</PAM_PASSWORD>
                       <!--<MAVEN_ARGS_APPEND>&#45;&#45;no-snapshot-updates</MAVEN_ARGS_APPEND>-->
                       <!--<MAVEN_MIRROR_URL>${maven.mirror.url}</MAVEN_MIRROR_URL>-->
                     </env>
@@ -233,7 +238,7 @@
               <resources>
                 <services>
                   <service>
-                    <name>${profile.application.name}-db-service</name>
+                    <name>${artifactId}</name>
                     <expose>true</expose>
                     <ports>
                       <port>
