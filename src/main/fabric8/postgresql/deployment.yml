@@ -9,20 +9,19 @@ spec:
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
-                name:  ${profile.application.name}-db-secrets
+                name:  ${profile.application.name}-db-secret
                 key: password
           - name: POSTGRESQL_USER
             valueFrom:
               secretKeyRef:
-                name:  ${profile.application.name}-db-secrets
+                name:  ${profile.application.name}-db-secret
                 key: username
           securityContext:
             fsGroup: 0
           volumeMounts:
             - mountPath: /var/lib/pgsql/data
-              name: ${profile.application.name}-db-data
-
+              name: ${profile.application.name}-postgresql-pvol
       volumes:
-        - name: ${profile.application.name}-db-data
+        - name: ${profile.application.name}-postgresql-pvol
           persistentVolumeClaim:
-            claimName: ${profile.application.name}-db-pvc
+            claimName: ${profile.application.name}-postgresql-claim

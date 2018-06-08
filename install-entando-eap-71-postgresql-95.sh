@@ -1,7 +1,7 @@
 ENTANDO_OPS_HOME=~/Code/entando/entando-ops/
 
 function get_property {
-    echo "$(cat src/main/filters/filter-openshift.properties | grep -oP "(?<=profile\.$1\=).+$")"
+    echo "$(cat src/main/filters/filter-openshift.properties | grep -oP "(?<=^profile\.$1\=).+$")"
 }
 function echo_header() {
   echo
@@ -65,10 +65,11 @@ kind: Secret
 metadata:
   name: "$(get_property application.name)-db-secret"
 stringData:
+  jdbcUrl: "jdbc:postgresql://$(get_property application.name)-postgresql.${OPENSHIFT_PROJECT}.svc:5432/"
   username: "$(get_property database.username)"
   password: "$(get_property database.password)"
 EOF
-
+    echo "password=$(get_property database.password)"
     echo_header "Creating KIEServer secret."
     oc delete secret "$(get_property application.name)-kieserver-secret" 2> /dev/null
     cat <<EOF | oc create -f -
@@ -77,7 +78,7 @@ kind: Secret
 metadata:
   name: "$(get_property application.name)-kieserver-secret"
 stringData:
-  url: "http://$(get_property application.name)-kieserver.svc/kie-server"
+  url: "http://$(get_property application.name)-kieserver.${OPENSHIFT_PROJECT}.svc/kie-server"
   username: "$(get_property kieserver.username)"
   password: "$(get_property kieserver.password)"
 EOF
@@ -133,6 +134,8 @@ function create_entando_application(){
     oc delete bc "$(get_property application.name)-postgresql-s2i" 2> /dev/null
 
     oc process -f $ENTANDO_OPS_HOME/Openshift/templates/entando-eap-71-with-postgresql-95.yml \
+            -p PROJECT_NAME="$OPENSHIFT_PROJECT" \
+            -p APPLICATION_NAME="$(get_property application.name)" \
             -p SOURCE_REPOSITORY_URL=$(git remote -v | grep -oP "(?<=origin\s).+(?=\s\(fetch\)$)") \
             -p KIESERVER_SECRET="$(get_property application.name)-kieserver-secret" \
             -p DB_SECRET="$(get_property application.name)-db-secret" \
@@ -142,13 +145,14 @@ function create_entando_application(){
             -p ENTANDO_SERV_DATABASE="$(get_property database.name.servdb)" \
             -p HTTPS_SECRET="entando-app-secret" \
             -p JGROUPS_ENCRYPT_SECRET="entando-app-secret" \
+            -p IMAGE_STREAM_NAMESPACE="$(get_property openshift.project)" \
             | oc create -f -
 #            -p MAVEN_MIRROR_URL="$( oc describe route nexus -n openshift|grep -oP "(?<=Requested\sHost:\t\t)[^ ]+")" \
 }
 
 source $(dirname $0)/set_openshift_project.sh
 import_imagestreams
-pull_docker_images
-create_secrets_and_linked_service_accounts
-create_kie_application
+#pull_docker_images
+#create_secrets_and_linked_service_accounts
+#create_kie_application
 create_entando_application

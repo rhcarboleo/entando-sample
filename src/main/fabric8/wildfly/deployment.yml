@@ -7,10 +7,10 @@ spec:
           - name: PG_PASSWORD
             valueFrom:
               secretKeyRef:
-                name:  ${profile.application.name}-db-secrets
+                name:  ${profile.application.name}-db-secret
                 key: password
           - name: PG_USERNAME
             valueFrom:
               secretKeyRef:
-                name:  ${profile.application.name}-db-secrets
+                name:  ${profile.application.name}-db-secret
                 key: username
