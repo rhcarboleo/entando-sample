@@ -218,27 +218,7 @@
                     </assembly>
 
                     <env>
-                      <PG_ENTANDO_PORT_DB_JNDI_NAME>java:jboss/datasources/${profile.application.name}PortDataSource</PG_ENTANDO_PORT_DB_JNDI_NAME>
-                      <PG_ENTANDO_SERV_DB_JNDI_NAME>java:jboss/datasources/${profile.application.name}ServDataSource</PG_ENTANDO_SERV_DB_JNDI_NAME>
-                      <PG_ENTANDO_PORT_DB_CONNECTION_STRING>${profile.database.url.portdb}</PG_ENTANDO_PORT_DB_CONNECTION_STRING>
-                      <PG_ENTANDO_SERV_DB_CONNECTION_STRING>${profile.database.url.servdb}</PG_ENTANDO_SERV_DB_CONNECTION_STRING>
-                      <JGROUPS_PING_PROTOCOL>openshift.DNS_PING</JGROUPS_PING_PROTOCOL>
-                      <OPENSHIFT_DNS_PING_SERVICE_NAME>${profile.application.name}-ping</OPENSHIFT_DNS_PING_SERVICE_NAME>
-                      <OPENSHIFT_DNS_PING_SERVICE_PORT>8888</OPENSHIFT_DNS_PING_SERVICE_PORT>
-                      <HTTPS_KEYSTORE_DIR>/etc/eap-secret-volume</HTTPS_KEYSTORE_DIR>
-                      <HTTPS_KEYSTORE>keystore.jks</HTTPS_KEYSTORE>
-                      <HTTPS_KEYSTORE_TYPE>JKS</HTTPS_KEYSTORE_TYPE>
-                      <HTTPS_NAME>jboss</HTTPS_NAME>
-                      <HTTPS_PASSWORD>mykeystorepass</HTTPS_PASSWORD>
-                      <JGROUPS_ENCRYPT_SECRET>entando-app-secret</JGROUPS_ENCRYPT_SECRET>
-                      <JGROUPS_ENCRYPT_KEYSTORE_DIR>/etc/jgroups-encrypt-secret-volume</JGROUPS_ENCRYPT_KEYSTORE_DIR>
-                      <JGROUPS_ENCRYPT_KEYSTORE>jgroups.jceks</JGROUPS_ENCRYPT_KEYSTORE>
-                      <JGROUPS_ENCRYPT_NAME>secret-key</JGROUPS_ENCRYPT_NAME>
-                      <JGROUPS_ENCRYPT_PASSWORD>password</JGROUPS_ENCRYPT_PASSWORD>
-                      <JGROUPS_CLUSTER_PASSWORD>ApW1Gg40</JGROUPS_CLUSTER_PASSWORD>
-                      <AUTO_DEPLOY_EXPLODED>false</AUTO_DEPLOY_EXPLODED>
-                      <DEFAULT_JOB_REPOSITORY>${profile.application.name}-postgresql</DEFAULT_JOB_REPOSITORY>
-                      <TIMER_SERVICE_DATA_STORE>${profile.application.name}-postgresql</TIMER_SERVICE_DATA_STORE>
+
                       <!--<MAVEN_ARGS_APPEND>&#45;&#45;no-snapshot-updates</MAVEN_ARGS_APPEND>-->
                       <!--<MAVEN_MIRROR_URL>${maven.mirror.url}</MAVEN_MIRROR_URL>-->
                     </env>

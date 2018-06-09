@@ -14,6 +14,48 @@ spec:
               secretKeyRef:
                 name:  ${profile.application.name}-db-secret
                 key: username
+          - name: PG_ENTANDO_PORT_DB_JNDI_NAME
+            value: java:jboss/datasources/${profile.application.name}PortDataSource
+          - name: PG_ENTANDO_SERV_DB_JNDI_NAME
+            value: java:jboss/datasources/${profile.application.name}ServDataSource
+          - name: PG_ENTANDO_PORT_DB_CONNECTION_STRING
+            value: ${profile.database.url.portdb}
+          - name: PG_ENTANDO_SERV_DB_CONNECTION_STRING
+            value: ${profile.database.url.servdb}
+#          - name: JGROUPS_PING_PROTOCOL
+#            value: openshift.DNS_PING
+#          - name: OPENSHIFT_DNS_PING_SERVICE_NAME
+#            value: ${profile.application.name}-ping
+#          - name: OPENSHIFT_DNS_PING_SERVICE_PORT
+#            value: 8888
+          - name: HTTPS_KEYSTORE_DIR
+            value: /etc/eap-secret-volume
+          - name: HTTPS_KEYSTORE
+            value: keystore.jks
+          - name: HTTPS_KEYSTORE_TYPE
+            value: JKS
+          - name: HTTPS_NAME
+            value: jboss
+          - name: HTTPS_PASSWORD
+            value: mykeystorepass
+          - name: JGROUPS_ENCRYPT_SECRET
+            value: entando-app-secret
+          - name: JGROUPS_ENCRYPT_KEYSTORE_DIR
+            value: /etc/jgroups-encrypt-secret-volume
+          - name: JGROUPS_ENCRYPT_KEYSTORE
+            value: jgroups.jceks
+          - name: JGROUPS_ENCRYPT_NAME
+            value: secret-key
+          - name: JGROUPS_ENCRYPT_PASSWORD
+            value: password
+          - name: JGROUPS_CLUSTER_PASSWORD
+            value: ApW1Gg40
+          - name: AUTO_DEPLOY_EXPLODED
+            value: false
+          - name: DEFAULT_JOB_REPOSITORY
+            value: ${profile.application.name}-postgresql
+          - name: TIMER_SERVICE_DATA_STORE
+            value: ${profile.application.name}-postgresql
           volumeMounts:
             - name: eap-keystore-volume
               mountPath: /etc/eap-secret-volume
