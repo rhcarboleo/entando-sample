@@ -1,0 +1,46 @@
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - env:
+          - name: PG_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name:  ${profile.application.name}-db-secret
+                key: password
+          - name: PG_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name:  ${profile.application.name}-db-secret
+                key: username
+          volumeMounts:
+            - name: eap-keystore-volume
+              mountPath: /etc/eap-secret-volume
+              readOnly": true
+            - name: eap-jgroups-keystore-volume
+              mountPath: /etc/jgroups-encrypt-secret-volume
+              readOnly": true
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - /opt/eap/bin/livenessProbe.sh
+            initialDelaySeconds: 60
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - /opt/eap/bin/readinessProbe.sh
+      volumes:
+        - name: eap-keystore-volume
+          secret:
+            secretName: entando-app-secret
+        - name: eap-jgroups-keystore-volume
+          secret:
+            secretName: entando-app-secret
+
+
+

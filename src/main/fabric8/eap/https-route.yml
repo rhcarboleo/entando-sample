@@ -1,0 +1,15 @@
+---
+kind: Route
+apiVersion: v1
+id: ${profile.application.name}-https
+metadata:
+  name: secure-${profile.application.name}
+  labels:
+    application: ${profile.application.name}
+  annotations:
+    description: Route for application's https service.
+spec:
+  to:
+    name: secure-${profile.application.name}
+  tls:
+    termination: passthrough

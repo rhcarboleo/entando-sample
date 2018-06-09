@@ -108,14 +108,83 @@
         <jboss>jboss</jboss>
       </properties>
     </profile>
-
     <profile>
-      <id>openshift</id>
+      <id>openshift-wildfly</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
-        <env>openshift</env>
+        <env>openshift-wildfly</env>
+        <env.db.environment>production</env.db.environment>
+        <jboss>jboss</jboss>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-maven-plugin</artifactId>
+            <version>3.5.37</version>
+            <executions>
+              <execution>
+                <id>fabric8</id>
+                <goals>
+                  <goal>resource</goal>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <mode>openshift</mode>
+              <resourceDir>src/main/fabric8/wildfly</resourceDir>
+              <images>
+                <image>
+                  <name>%g/%a:%v</name>
+                  <alias>entando</alias>
+                  <build>
+                    <from>entando/entando-fabric8s2i-wildfly-12:5.0.0</from>
+                    <assembly>
+                      <descriptorRef>project</descriptorRef>
+                    </assembly>
+
+                    <env>
+                      <PG_ENTANDO_PORT_DB_JNDI_NAME>java:jboss/datasources/${profile.application.name}PortDataSource</PG_ENTANDO_PORT_DB_JNDI_NAME>
+                      <PG_ENTANDO_SERV_DB_JNDI_NAME>java:jboss/datasources/${profile.application.name}ServDataSource</PG_ENTANDO_SERV_DB_JNDI_NAME>
+                      <PG_ENTANDO_PORT_DB_CONNECTION_STRING>${profile.database.url.portdb}</PG_ENTANDO_PORT_DB_CONNECTION_STRING>
+                      <PG_ENTANDO_SERV_DB_CONNECTION_STRING>${profile.database.url.servdb}</PG_ENTANDO_SERV_DB_CONNECTION_STRING>
+                      <!--<MAVEN_ARGS_APPEND>&#45;&#45;no-snapshot-updates</MAVEN_ARGS_APPEND>-->
+                      <!--<MAVEN_MIRROR_URL>${maven.mirror.url}</MAVEN_MIRROR_URL>-->
+                    </env>
+                  </build>
+                </image>
+              </images>
+              <resources>
+                <services>
+                  <service>
+                    <name>${profile.application.name}</name>
+                    <expose>true</expose>
+                    <ports>
+                      <port>
+                        <name>http</name>
+                        <port>8080</port>
+                        <targetPort>8080</targetPort>
+                      </port>
+                    </ports>
+                  </service>
+                </services>
+              </resources>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>openshift-eap</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <env>openshift-eap</env>
         <env.db.environment>production</env.db.environment>
         <jboss>jboss</jboss>
       </properties>
@@ -136,7 +205,7 @@
             </executions>
             <configuration>
               <mode>openshift</mode>
-              <resourceDir>src/main/fabric8/wildfly</resourceDir>
+              <resourceDir>src/main/fabric8/eap</resourceDir>
               <images>
                 <image>
                   <name>%g/%a:%v</name>
@@ -147,11 +216,29 @@
                     <assembly>
                       <descriptorRef>project</descriptorRef>
                     </assembly>
+
                     <env>
                       <PG_ENTANDO_PORT_DB_JNDI_NAME>java:jboss/datasources/${profile.application.name}PortDataSource</PG_ENTANDO_PORT_DB_JNDI_NAME>
                       <PG_ENTANDO_SERV_DB_JNDI_NAME>java:jboss/datasources/${profile.application.name}ServDataSource</PG_ENTANDO_SERV_DB_JNDI_NAME>
                       <PG_ENTANDO_PORT_DB_CONNECTION_STRING>${profile.database.url.portdb}</PG_ENTANDO_PORT_DB_CONNECTION_STRING>
                       <PG_ENTANDO_SERV_DB_CONNECTION_STRING>${profile.database.url.servdb}</PG_ENTANDO_SERV_DB_CONNECTION_STRING>
+                      <JGROUPS_PING_PROTOCOL>openshift.DNS_PING</JGROUPS_PING_PROTOCOL>
+                      <OPENSHIFT_DNS_PING_SERVICE_NAME>${profile.application.name}-ping</OPENSHIFT_DNS_PING_SERVICE_NAME>
+                      <OPENSHIFT_DNS_PING_SERVICE_PORT>8888</OPENSHIFT_DNS_PING_SERVICE_PORT>
+                      <HTTPS_KEYSTORE_DIR>/etc/eap-secret-volume</HTTPS_KEYSTORE_DIR>
+                      <HTTPS_KEYSTORE>keystore.jks</HTTPS_KEYSTORE>
+                      <HTTPS_KEYSTORE_TYPE>JKS</HTTPS_KEYSTORE_TYPE>
+                      <HTTPS_NAME>jboss</HTTPS_NAME>
+                      <HTTPS_PASSWORD>mykeystorepass</HTTPS_PASSWORD>
+                      <JGROUPS_ENCRYPT_SECRET>entando-app-secret</JGROUPS_ENCRYPT_SECRET>
+                      <JGROUPS_ENCRYPT_KEYSTORE_DIR>/etc/jgroups-encrypt-secret-volume</JGROUPS_ENCRYPT_KEYSTORE_DIR>
+                      <JGROUPS_ENCRYPT_KEYSTORE>jgroups.jceks</JGROUPS_ENCRYPT_KEYSTORE>
+                      <JGROUPS_ENCRYPT_NAME>secret-key</JGROUPS_ENCRYPT_NAME>
+                      <JGROUPS_ENCRYPT_PASSWORD>password</JGROUPS_ENCRYPT_PASSWORD>
+                      <JGROUPS_CLUSTER_PASSWORD>ApW1Gg40</JGROUPS_CLUSTER_PASSWORD>
+                      <AUTO_DEPLOY_EXPLODED>false</AUTO_DEPLOY_EXPLODED>
+                      <DEFAULT_JOB_REPOSITORY>${profile.application.name}-postgresql</DEFAULT_JOB_REPOSITORY>
+                      <TIMER_SERVICE_DATA_STORE>${profile.application.name}-postgresql</TIMER_SERVICE_DATA_STORE>
                       <!--<MAVEN_ARGS_APPEND>&#45;&#45;no-snapshot-updates</MAVEN_ARGS_APPEND>-->
                       <!--<MAVEN_MIRROR_URL>${maven.mirror.url}</MAVEN_MIRROR_URL>-->
                     </env>
@@ -165,7 +252,8 @@
                     <expose>true</expose>
                     <ports>
                       <port>
-                        <port>80</port>
+                        <name>http</name>
+                        <port>8080</port>
                         <targetPort>8080</targetPort>
                       </port>
                     </ports>
@@ -178,14 +266,14 @@
       </build>
     </profile>
     <profile>
-      <id>postgresql</id>
+      <id>openshift-postgresql</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
 
       <properties>
         <fabric8.suffix>-postgresql</fabric8.suffix>
-        <env>postgresql</env>
+        <env>openshift-postgresql</env>
         <env.db.environment>production</env.db.environment>
         <jboss></jboss>
       </properties>
@@ -226,9 +314,9 @@
                       <POSTGRESQL_PASSWORD>${profile.database.password}</POSTGRESQL_PASSWORD>
                       <POSTGRESQL_DATABASE>${profile.database.name.portdb}</POSTGRESQL_DATABASE>
                       <POSTGRESQL_DATABASE2>${profile.database.name.servdb}</POSTGRESQL_DATABASE2>
-                      <PAM_URL>https://my.domain.com/kie-server</PAM_URL>
-                      <PAM_USERNAME>ampie</PAM_USERNAME>
-                      <PAM_PASSWORD>password!</PAM_PASSWORD>
+                      <KIE_SERVER_URL>https://my.domain.com/kie-server</KIE_SERVER_URL>
+                      <KIE_SERVER_USERNAME>ampie</KIE_SERVER_USERNAME>
+                      <KIE_SERVER_PASSWORD>password!</KIE_SERVER_PASSWORD>
                       <!--<MAVEN_ARGS_APPEND>&#45;&#45;no-snapshot-updates</MAVEN_ARGS_APPEND>-->
                       <!--<MAVEN_MIRROR_URL>${maven.mirror.url}</MAVEN_MIRROR_URL>-->
                     </env>
@@ -239,9 +327,10 @@
                 <services>
                   <service>
                     <name>${artifactId}</name>
-                    <expose>true</expose>
+                    <expose>false</expose>
                     <ports>
                       <port>
+                        <name>databaseport</name>
                         <port>5432</port>
                         <targetPort>5432</targetPort>
                       </port>
