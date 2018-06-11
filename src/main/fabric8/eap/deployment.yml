@@ -1,6 +1,13 @@
 spec:
   replicas: 1
+  selector:
+    deploymentConfig: ${profile.application.name}
   template:
+    metadata:
+      labels:
+        application: ${profile.application.name}
+        deploymentConfig: ${profile.application.name}
+      name: ${profile.application.name}
     spec:
       containers:
         - env:
@@ -22,12 +29,12 @@ spec:
             value: ${profile.database.url.portdb}
           - name: PG_ENTANDO_SERV_DB_CONNECTION_STRING
             value: ${profile.database.url.servdb}
-#          - name: JGROUPS_PING_PROTOCOL
-#            value: openshift.DNS_PING
-#          - name: OPENSHIFT_DNS_PING_SERVICE_NAME
-#            value: ${profile.application.name}-ping
-#          - name: OPENSHIFT_DNS_PING_SERVICE_PORT
-#            value: 8888
+          - name: JGROUPS_PING_PROTOCOL
+            value: openshift.DNS_PING
+          - name: OPENSHIFT_DNS_PING_SERVICE_NAME
+            value: ${profile.application.name}-ping
+          - name: OPENSHIFT_DNS_PING_SERVICE_PORT
+            value: 8888
           - name: HTTPS_KEYSTORE_DIR
             value: /etc/eap-secret-volume
           - name: HTTPS_KEYSTORE

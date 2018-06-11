@@ -238,6 +238,28 @@
                       </port>
                     </ports>
                   </service>
+                  <service>
+                    <name>secure-${profile.application.name}</name>
+                    <expose>false</expose>
+                    <ports>
+                      <port>
+                        <name>https</name>
+                        <port>8443</port>
+                        <targetPort>8443</targetPort>
+                      </port>
+                    </ports>
+                  </service>
+                  <service>
+                    <name>${profile.application.name}-ping</name>
+                    <expose>false</expose>
+                    <ports>
+                      <port>
+                        <name>https</name>
+                        <port>8888</port>
+                        <targetPort>8888</targetPort>
+                      </port>
+                    </ports>
+                  </service>
                 </services>
               </resources>
             </configuration>

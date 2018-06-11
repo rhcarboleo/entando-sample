@@ -10,7 +10,7 @@
 	
 	<Environment name="configVersion" value="production" type="java.lang.String" override="false" />
 	
-	<Environment name="applicationBaseURL" value="http://www.mydomain.com/entando-sample/" type="java.lang.String" override="false" />
+	<Environment name="applicationBaseURL" value="http://entando-core.minishift/entando-sample/" type="java.lang.String" override="false" />
 	<Environment name="resourceRootURL" value="/entando-sample/resources/" type="java.lang.String" override="false" />
 	<Environment name="protectedResourceRootURL" value="/entando-sample/protected/" type="java.lang.String" override="false" />
 	

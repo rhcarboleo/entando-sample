@@ -9,6 +9,7 @@ metadata:
   annotations:
     description: Route for application's https service.
 spec:
+  host: ${profile.application.baseurl.secure.hostname}
   to:
     name: secure-${profile.application.name}
   tls:

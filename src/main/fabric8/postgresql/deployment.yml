@@ -2,7 +2,14 @@ metadata:
   name: ${profile.application.name}-postgresql
 spec:
   replicas: 1
+  selector:
+    deploymentConfig: ${profile.application.name}-postgresql
   template:
+    metadata:
+      labels:
+        application: ${profile.application.name}
+        deploymentConfig: ${profile.application.name}-postgresql
+      name: ${profile.application.name}
     spec:
       containers:
         - env:
