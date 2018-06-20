@@ -14,3 +14,5 @@ spec:
               secretKeyRef:
                 name:  ${profile.application.name}-db-secret
                 key: username
+          - name: MAVEN_MIRROR_URL
+            value: ${maven.mirror.url}

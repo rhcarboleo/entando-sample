@@ -1,3 +1,4 @@
 <jboss-web>
     <context-root>/entando-sample</context-root>
+
 </jboss-web>

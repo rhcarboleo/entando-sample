@@ -21,10 +21,6 @@ spec:
               secretKeyRef:
                 name:  ${profile.application.name}-db-secret
                 key: username
-          - name: PG_ENTANDO_PORT_DB_JNDI_NAME
-            value: java:jboss/datasources/${profile.application.name}PortDataSource
-          - name: PG_ENTANDO_SERV_DB_JNDI_NAME
-            value: java:jboss/datasources/${profile.application.name}ServDataSource
           - name: PG_ENTANDO_PORT_DB_CONNECTION_STRING
             value: ${profile.database.url.portdb}
           - name: PG_ENTANDO_SERV_DB_CONNECTION_STRING
@@ -63,6 +59,9 @@ spec:
             value: ${profile.application.name}-postgresql
           - name: TIMER_SERVICE_DATA_STORE
             value: ${profile.application.name}-postgresql
+          - name: MAVEN_MIRROR_URL
+            value: ${maven.mirror.url}
+
           volumeMounts:
             - name: eap-keystore-volume
               mountPath: /etc/eap-secret-volume

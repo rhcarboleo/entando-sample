@@ -1,37 +1,37 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Context path="/entando-sample" docBase="./entando-sample" debug="1" reloadable="false">
-	<!--
-	<Environment name="logActiveFileOutput" value="true" type="java.lang.String" override="false" />
-	<Environment name="logName" value="entando-sample" type="java.lang.String" override="false" />
-	<Environment name="logFilePrefix" value="/opt/eap/standalone/logs/entando-sample_log" type="java.lang.String" override="false" />
-	<Environment name="logLevel" value="WARN" type="java.lang.String" override="false" />
-	<Environment name="logFileSize" value="200000" type="java.lang.String" override="false" />
-	<Environment name="logFilesCount" value="10" type="java.lang.String" override="false" />
+
+    <Environment name="logActiveFileOutput" value="true" type="java.lang.String" override="false" />
+    <Environment name="logName" value="entando-sample" type="java.lang.String" override="false" />
+    <Environment name="logFilePrefix" value="/opt/eap/standalone/logs/entando-sample_log" type="java.lang.String" override="false" />
+    <Environment name="logLevel" value="WARN" type="java.lang.String" override="false" />
+    <Environment name="logFileSize" value="200000" type="java.lang.String" override="false" />
+    <Environment name="logFilesCount" value="10" type="java.lang.String" override="false" />
+
+    <Environment name="configVersion" value="production" type="java.lang.String" override="false" />
+
+    <Environment name="applicationBaseURL" value="http://entando-sample.pietie/entando-sample/" type="java.lang.String" override="false" />
+    <Environment name="resourceRootURL" value="/entando-sample/resources/" type="java.lang.String" override="false" />
+    <Environment name="protectedResourceRootURL" value="/entando-sample/protected/" type="java.lang.String" override="false" />
+
+    <Environment name="resourceDiskRootFolder" value="/opt/eap/standalone/deployments/entando-sample/resources" type="java.lang.String" override="false" />
+    <Environment name="protectedResourceDiskRootFolder" value="/opt/eap/standalone/deployments/entando-sample/protected" type="java.lang.String" override="false" />
+
+    <Environment name="indexDiskRootFolder" value="/opt/eap/standalone/deployments/entando-sample/indexdir" type="java.lang.String" override="false" />
+    
+    <Environment name="portDataSourceClassName" value="${profile.portDataSourceClassName}" type="java.lang.String" override="false" />
+    <Environment name="servDataSourceClassName" value="${profile.servDataSourceClassName}" type="java.lang.String" override="false" />
 	
-	<Environment name="configVersion" value="production" type="java.lang.String" override="false" />
-	
-	<Environment name="applicationBaseURL" value="http://entando-core.minishift/entando-sample/" type="java.lang.String" override="false" />
-	<Environment name="resourceRootURL" value="/entando-sample/resources/" type="java.lang.String" override="false" />
-	<Environment name="protectedResourceRootURL" value="/entando-sample/protected/" type="java.lang.String" override="false" />
-	
-	<Environment name="resourceDiskRootFolder" value="/opt/eap/standalone/deployments/entando-sample/resources" type="java.lang.String" override="false" />
-	<Environment name="protectedResourceDiskRootFolder" value="/opt/eap/standalone/deployments/entando-sample/protected" type="java.lang.String" override="false" />
-	
-	<Environment name="indexDiskRootFolder" value="/opt/eap/standalone/deployments/entando-sample/indexdir" type="java.lang.String" override="false" />
-	
-	<Environment name="portDataSourceClassName" value="org.postgresql.Driver" type="java.lang.String" override="false" />
-	<Environment name="servDataSourceClassName" value="org.postgresql.Driver" type="java.lang.String" override="false" />
-	
-	<Resource name="jdbc/portDataSource" auth="Container" 
-		type="javax.sql.DataSource" driverClassName="org.postgresql.Driver" 
-		maxActive="8" maxIdle="4" 
-		username="agile" password="agile" 
-		url="jdbc:postgresql://entando-sample-postgresql.entando-sample-project.svc:5432/entandoPort" />
-	
-	<Resource name="jdbc/servDataSource" auth="Container" 
-		type="javax.sql.DataSource" driverClassName="org.postgresql.Driver" 
-		maxActive="8" maxIdle="4" 
-		username="agile" password="agile" 
-		url="jdbc:postgresql://entando-sample-postgresql.entando-sample-project.svc:5432/entandoServ" />
-	-->
+    <Resource name="jdbc/portDataSource" auth="Container"
+              type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
+              maxActive="8" maxIdle="4"
+              username="agile" password="agile"
+              url="jdbc:postgresql://entando-sample-postgresql.entando-sample-project.svc:5432/entandoPort" />
+
+    <Resource name="jdbc/servDataSource" auth="Container"
+              type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
+              maxActive="8" maxIdle="4"
+              username="agile" password="agile"
+              url="jdbc:postgresql://entando-sample-postgresql.entando-sample-project.svc:5432/entandoServ" />
+
 </Context>

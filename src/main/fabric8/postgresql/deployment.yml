@@ -38,6 +38,32 @@ spec:
               secretKeyRef:
                 name:  ${profile.application.name}-kieserver-secret
                 key: username
+          - name: POSTGRESQL_MAX_CONNECTIONS
+            value: 100
+          - name: POSTGRESQL_MAX_PREPARED_TRANSACTIONS
+            value: 0
+          - name: POSTGRESQL_SHARED_BUFFERS
+            value: 32MB
+          - name: POSTGRESQL_EFFECTIVE_CACHE_SIZE
+            value: 128MB
+          - name: POSTGRESQL_USER
+            value: ${profile.database.username}
+          - name: POSTGRESQL_PASSWORD
+            value: ${profile.database.password}
+          - name: POSTGRESQL_DATABASE
+            value: ${profile.database.name.portdb}
+          - name: POSTGRESQL_DATABASE2
+            value: ${profile.database.name.servdb}
+          - name: KIE_SERVER_URL
+            value: https://my.domain.com/kie-server
+          - name: KIE_SERVER_USERNAME
+            value: ampie
+          - name: KIE_SERVER_PASSWORD
+            value: password!
+          - name: MAVEN_ARGS_APPEND
+            value: --no-snapshot-updates
+          - name: MAVEN_MIRROR_URL
+            value: ${maven.mirror.url}
           securityContext:
             fsGroup: 0
           volumeMounts:

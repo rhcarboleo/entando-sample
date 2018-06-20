@@ -1,13 +1,24 @@
 #!/usr/bin/env bash
-export ENTANDO_OPS_HOME=~/Code/entando/entando-ops/
-export OPENSHIFT_PROJECT=$(cat src/main/filters/filter-openshift-eap.properties | grep -oP "(?<=profile\.openshift\.project\=).+$")
+export ENTANDO_OPS_HOME=~/Code/entando/entando-ops
+#Best guess for development
+export STAGE=dev
+
+export OPENSHIFT_PROJECT=$(cat src/main/filters/stage/$STAGE.properties | grep -oP "(?<=profile\.openshift\.project\=).+$")
+function apply_maven_filters(){
+   #Clean the project and regenerates all resources that use filters, typically just before an Openshift binary build
+   echo_header "Applying the maven filters for profile $1"
+   #openshift.subdomain can be unset in SIT and PROD without breaking anything
+   mvn clean process-resources -P$1 -Dopenshift.subdomain=$(get_openshift_subdomain)
+}
+
 function generate_expanded_properties_file(){
-#for the time being we are only really interest in some basic properties, but in future we may
-#want to exploit property expansion more in which case we may need to generate per profile
-   mvn resources:copy-resources@generate-filter-properties -Popenshift-eap
+   echo_header "Generating properties files for profile $1"
+   #ONLY regenerates the expanded properties file
+   #openshift.subdomain can be unset in SIT and PROD without breaking anything
+   mvn resources:copy-resources@generate-filter-properties -P$1 -Dopenshift.subdomain=$(get_openshift_subdomain)
 }
 function get_property {
-    echo "$(cat $(dirname $0)/target/filters/filter-openshift-eap.properties | grep -oP "(?<=^profile\.$1\=).+$")"
+    echo "$(cat $(dirname $0)/target/all-filters/all-filters.properties | grep -oP "(?<=^profile\.$1\=).+$")"
 }
 function echo_header() {
     echo
@@ -27,7 +38,17 @@ function set_openshift_project(){
       oc new-project ${OPENSHIFT_PROJECT};
     fi;
 }
+function calculate_mirror_url(){
+    APPLICATION_NAME=$(get_property application.name)
+    NEXUS_URL="$( oc describe route $APPLICATION_NAME-nexus|grep -oP "(?<=Requested\sHost:\t\t)[^ ]+")"
+    if [ ! -z $NEXUS_URL ]; then
+        NEXUS_URL="http://$NEXUS_URL/repository/maven-public"
+    fi
+    echo $NEXUS_URL
+}
+
 function recreate_secrets_and_linked_service_accounts() {
+#only for use on a development machine. In SIT/PROD we would probably prefer to manage the secrets separately
     echo_header "Creating Entando keystore secret."
     oc delete secret entando-app-secret 2> /dev/null
     oc delete sa entando-service-account 2> /dev/null
@@ -64,41 +85,28 @@ stringData:
 EOF
 
 }
-function delete_old_entando_postgresql_objects(){
-    echo_header "Deleting old Entando Postgresql Objects." 2> /dev/null
-    oc delete service "$(get_property application.name)-postgresql" 2> /dev/null
-    oc delete imagestream "$(get_property application.name)-postgresql" 2> /dev/null
-    oc delete deploymentconfig "$(get_property application.name)-postgresql" 2> /dev/null
-    oc delete persistentvolumeclaim "$(get_property application.name)-postgresql-claim" 2> /dev/null
-    oc delete bc "$(get_property application.name)-postgresql-s2i" 2> /dev/null
-    #oc delete buildconfig "$(get_property application.name)-postgresql" 2> /dev/null
+function import_entando_image_streams(){
+    echo_header "Importing Entando Image Streams"
+    IMAGES=("app-builder-openshift" "entando-postgresql95-openshift" "entando-wildfly12-openshift" \
+            "entando-eap71-openshift" "entando-tomcat8-openshift" "nexus-with-entando-dependencies")
+    for IMAGE in "${IMAGES[@]}"
+    do
+        oc delete is $IMAGE 2> /dev/null
+        oc create -f $ENTANDO_OPS_HOME/Openshift/image-streams/$IMAGE.json
+    done
 }
-function delete_old_entando_service_objects(){
-    echo_header "Deleting old Entando Service Objects." 2> /dev/null
-    oc delete service "$(get_property application.name)" 2> /dev/null
-    oc delete service "secure-$(get_property application.name)" 2> /dev/null
-    oc delete service "$(get_property application.name)-ping" 2> /dev/null
-    oc delete route "$(get_property application.name)" 2> /dev/null
-    oc delete route "secure-$(get_property application.name)" 2> /dev/null
-    oc delete imagestream "$(get_property application.name)" 2> /dev/null
-    oc delete deploymentconfig "$(get_property application.name)" 2> /dev/null
-    oc delete bc "$(get_property application.name)-s2i" 2> /dev/null
-    #oc delete buildconfig "$(get_property application.name)" 2> /dev/null
-}
-function deploy_webapps(){
-    APP_NAME="$(get_property application.name)"
-    ENTANDO_SERVICE_URL=$(oc describe route $APP_NAME|grep -oP "(?<=Requested\sHost:\t\t)[^ ]+")
-    ENTANDO_SERVICE_URL=http://$ENTANDO_SERVICE_URL/entando-sample
-    ENTANDO_VERSION=5.0.0
-    oc delete service "$APP_NAME-mapp-engine-admin-app" 2> /dev/null
-    oc delete dc "$APP_NAME-mapp-engine-admin-app" 2> /dev/null
-    oc delete route "$APP_NAME-mapp-engine-admin-app" 2> /dev/null
-    oc new-app --name "$APP_NAME-mapp-engine-admin-app" --docker-image entando/mapp-engine-admin-app-openshift:$ENTANDO_VERSION -e DOMAIN=$ENTANDO_SERVICE_URL
-    oc expose svc "$APP_NAME-mapp-engine-admin-app"
 
-    oc delete service "$APP_NAME-app-builder" 2> /dev/null
-    oc delete dc "$APP_NAME-app-builder" 2> /dev/null
-    oc delete route "$APP_NAME-app-builder" 2> /dev/null
-    oc new-app --name "$APP_NAME-app-builder" --docker-image entando/app-builder-openshift:$ENTANDO_VERSION -e DOMAIN=$ENTANDO_SERVICE_URL
-    oc expose svc "$APP_NAME-app-builder"
+function get_openshift_subdomain(){
+    #TODO also inspect openshift config: minishift openshift config view | grep
+    PUBLIC_HOSTNAME=$(minishift config get public-hostname)
+    if [[ $PUBLIC_HOSTNAME == "<nil>" ]]; then
+       PUBLIC_HOSTNAME=$(minishift openshift config view | grep -oP "(?<=  subdomain: )[0-9\.a-zA-Z_\-]+")
+       if [[ -z $PUBLIC_HOSTNAME ]]; then
+          echo "$(minishift ip).nip.io"
+       else
+          echo $PUBLIC_HOSTNAME
+       fi
+    else
+        echo $PUBLIC_HOSTNAME
+    fi
 }
