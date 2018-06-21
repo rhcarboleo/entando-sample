@@ -79,7 +79,7 @@ kind: Secret
 metadata:
   name: "$(get_property application.name)-kieserver-secret"
 stringData:
-  url: "http://$(get_property application.name)-kieserver.${OPENSHIFT_PROJECT}.svc:8080/kie-server"
+  url: "http://$(get_property application.name)-kieserver.${OPENSHIFT_PROJECT}.svc:8080"
   username: "$(get_property kieserver.username)"
   password: "$(get_property kieserver.password)"
 EOF
