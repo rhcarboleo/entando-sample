@@ -45,7 +45,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','params',
 		<Param name="maxMonthsSinceLastPasswordChange">3</Param>
 	</ExtendendPrivacyModule>
 	<ExtraParams>
-		<Param name="page_preview_hash">kYtkuG2fHGl1Vdh9kwGf</Param>
+		<Param name="page_preview_hash">RWNXB7XidwNm0tfaIpjk</Param>
 	</ExtraParams>
 </Params>
 
@@ -97,10 +97,10 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','jpkiebpm
 </kiaBpmConfigFactory>');
 INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoComponentsReport','The component installation report','<?xml version="1.0" encoding="UTF-8"?>
 <reports status="OK">
-	<creation>2018-06-21 11:39:59</creation>
-	<lastupdate>2018-06-21 11:41:08</lastupdate>
+	<creation>2018-06-22 13:54:15</creation>
+	<lastupdate>2018-06-22 13:54:51</lastupdate>
 	<components>
-		<component code="entandoCore" date="2018-06-21 11:39:59" status="OK">
+		<component code="entandoCore" date="2018-06-22 13:54:15" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="OK">
 					<table name="sysconfig" />
@@ -147,7 +147,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="jprestapi" date="2018-06-21 11:40:57" status="OK">
+		<component code="jprestapi" date="2018-06-22 13:54:44" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="NOT_AVAILABLE" />
@@ -158,7 +158,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="entando-admin-console" date="2018-06-21 11:40:57" status="OK">
+		<component code="entando-admin-console" date="2018-06-22 13:54:44" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="OK">
@@ -171,7 +171,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="entando-portal-ui" date="2018-06-21 11:40:57" status="OK">
+		<component code="entando-portal-ui" date="2018-06-22 13:54:44" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="NOT_AVAILABLE" />
@@ -182,7 +182,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="entando-misc-inspinia" date="2018-06-21 11:40:57" status="OK">
+		<component code="entando-misc-inspinia" date="2018-06-22 13:54:44" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="NOT_AVAILABLE" />
@@ -193,18 +193,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="entando-widget-navigation_bar_inspinia" date="2018-06-21 11:40:57" status="OK">
-			<schema status="OK">
-				<datasource name="portDataSource" status="NOT_AVAILABLE" />
-				<datasource name="servDataSource" status="NOT_AVAILABLE" />
-			</schema>
-			<data status="OK">
-				<datasource name="portDataSource" status="OK" />
-				<datasource name="servDataSource" status="NOT_AVAILABLE" />
-			</data>
-			<postProcess status="NOT_AVAILABLE" />
-		</component>
-		<component code="entando-widget-login_form_inspinia" date="2018-06-21 11:40:57" status="OK">
+		<component code="entando-widget-navigation_bar_inspinia" date="2018-06-22 13:54:44" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="NOT_AVAILABLE" />
@@ -215,7 +204,18 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="jpkiebpm" date="2018-06-21 11:40:57" status="OK">
+		<component code="entando-widget-login_form_inspinia" date="2018-06-22 13:54:44" status="OK">
+			<schema status="OK">
+				<datasource name="portDataSource" status="NOT_AVAILABLE" />
+				<datasource name="servDataSource" status="NOT_AVAILABLE" />
+			</schema>
+			<data status="OK">
+				<datasource name="portDataSource" status="OK" />
+				<datasource name="servDataSource" status="NOT_AVAILABLE" />
+			</data>
+			<postProcess status="NOT_AVAILABLE" />
+		</component>
+		<component code="jpkiebpm" date="2018-06-22 13:54:44" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="OK">
@@ -229,7 +229,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="entando-widget-language_choose_inspinia" date="2018-06-21 11:40:58" status="OK">
+		<component code="entando-widget-language_choose_inspinia" date="2018-06-22 13:54:45" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="NOT_AVAILABLE" />
@@ -240,7 +240,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="NOT_AVAILABLE" />
 		</component>
-		<component code="entando-page-inspinia" date="2018-06-21 11:40:58" status="OK">
+		<component code="entando-page-inspinia" date="2018-06-22 13:54:45" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="NOT_AVAILABLE" />
@@ -251,7 +251,7 @@ INSERT INTO sysconfig (version,item,descr,config) VALUES ('production','entandoC
 			</data>
 			<postProcess status="OK" />
 		</component>
-		<component code="jpinfinispan" date="2018-06-21 11:40:58" status="OK">
+		<component code="jpinfinispan" date="2018-06-22 13:54:45" status="OK">
 			<schema status="OK">
 				<datasource name="portDataSource" status="NOT_AVAILABLE" />
 				<datasource name="servDataSource" status="NOT_AVAILABLE" />

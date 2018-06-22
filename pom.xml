@@ -31,22 +31,9 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
-        <env.db.environment>production</env.db.environment>
-        <jboss>jboss</jboss>
-        <server>eap</server>
-        <database>postgresql-openshift</database>
-      </properties>
-    </profile>
-    <profile>
-      <id>openshift-postgresql</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <properties>
-        <env.db.environment>production</env.db.environment>
-        <jboss></jboss>
-        <server>jetty</server>
-        <database>postgresql-local</database>
+        <env.db.environment>develop</env.db.environment>
+        <server>wildfly</server>
+        <database>derby</database>
       </properties>
     </profile>
   </profiles>
@@ -204,7 +191,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>src/main/config/${jboss}</directory>
+                  <directory>src/main/config/${server}</directory>
                   <includes>
                     <include>systemParams.properties</include>
                   </includes>
@@ -246,31 +233,10 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>src/main/config/${jboss}</directory>
+                  <directory>src/main/config/${server}</directory>
                   <includes>
                     <include>web.xml</include>
                     <include>jboss-web.xml</include>
-                  </includes>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-resources-contextxml</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>src/main/webapp/META-INF</outputDirectory>
-              <encoding>UTF-8</encoding>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>src/main/config</directory>
-                  <includes>
-                    <include>context.xml</include>
                   </includes>
                   <filtering>true</filtering>
                 </resource>
@@ -289,7 +255,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>src/main/config/${jboss}</directory>
+                  <directory>src/main/config/${server}</directory>
                   <includes>
                     <include>jbossBaseSystemConfig.xml</include>
                   </includes>
@@ -309,7 +275,7 @@
               <encoding>UTF-8</encoding>
               <resources>
                 <resource>
-                  <directory>src/main/config</directory>
+                  <directory>src/main/config/${server}</directory>
                   <includes>
                     <include>jetty-env.xml</include>
                   </includes>
@@ -345,11 +311,11 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/${jboss}</outputDirectory>
+              <outputDirectory>${project.build.directory}/${server}</outputDirectory>
               <encoding>UTF-8</encoding>
               <resources>
                 <resource>
-                  <directory>src/main/config/${jboss}</directory>
+                  <directory>src/main/config/${server}</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
@@ -451,7 +417,7 @@
           <webAppSourceDirectory>${basedir}/src/main/webapp</webAppSourceDirectory>
           <webApp>
             <!--<webInfIncludeJarPattern>nothing</webInfIncludeJarPattern>&lt;!&ndash;required to bypass annotation scanning that is timing out&ndash;&gt;-->
-            <defaultsDescriptor>${basedir}/src/main/config/webdefault.xml</defaultsDescriptor>
+            <defaultsDescriptor>${basedir}/src/main/config/jetty/webdefault.xml</defaultsDescriptor>
             <contextPath>/${project.artifactId}</contextPath>
             <jettyEnvXml>${project.build.directory}/jetty/jetty-env.xml</jettyEnvXml>
           </webApp>

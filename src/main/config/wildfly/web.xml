@@ -238,7 +238,7 @@
         <env-entry-name>applicationBaseURL</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>
-            ${profile.application.baseurl.protocol}://${profile.application.baseurl.hostname}${profile.application.baseurl.port.separator}${profile.application.baseurl.port}/${profile.application.name}/
+            ${profile.application.baseurl.protocol}://${profile.application.baseurl.hostname}${profile.application.baseurl.port.separator}${profile.application.baseurl.port}/
         </env-entry-value>
     </env-entry>
     <env-entry>

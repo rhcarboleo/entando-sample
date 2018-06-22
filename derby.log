@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Thu Jun 21 12:35:33 SAST 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0164-21e9-e09d-00002e293270 
-on database directory /home/ampie/Code/sandbox/entando-sample/${profile.jboss.home}/webapps/entando-sample/derby/production/entando-samplePort  with class loader ClassRealm[plugin>org.eclipse.jetty:jetty-maven-plugin:9.2.11.v20150529, parent: sun.misc.Launcher$AppClassLoader@1b6d3586] 
+Fri Jun 22 13:54:05 SAST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0164-2758-225d-0000271cd288 
+on database directory /home/ampie/Code/sandbox/entando-sample/target/derby/entandoPort  with class loader ClassRealm[plugin>org.eclipse.jetty:jetty-maven-plugin:9.2.11.v20150529, parent: sun.misc.Launcher$AppClassLoader@1b6d3586] 
 Loaded from file:/home/ampie/.m2/repository/org/apache/derby/derby/10.9.1.0/derby-10.9.1.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_171-8u171-b11-0ubuntu0.16.04.1-b11
@@ -9,9 +9,9 @@ user.dir=/home/ampie/Code/sandbox/entando-sample
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Thu Jun 21 12:35:54 SAST 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a05c0120-0164-21e9-e09d-00002e293270 
-on database directory /home/ampie/Code/sandbox/entando-sample/${profile.jboss.home}/webapps/entando-sample/derby/production/entando-sampleServ  with class loader ClassRealm[plugin>org.eclipse.jetty:jetty-maven-plugin:9.2.11.v20150529, parent: sun.misc.Launcher$AppClassLoader@1b6d3586] 
+Fri Jun 22 13:54:20 SAST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a05c0120-0164-2758-225d-0000271cd288 
+on database directory /home/ampie/Code/sandbox/entando-sample/target/derby/entandoServ  with class loader ClassRealm[plugin>org.eclipse.jetty:jetty-maven-plugin:9.2.11.v20150529, parent: sun.misc.Launcher$AppClassLoader@1b6d3586] 
 Loaded from file:/home/ampie/.m2/repository/org/apache/derby/derby/10.9.1.0/derby-10.9.1.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_171-8u171-b11-0ubuntu0.16.04.1-b11
