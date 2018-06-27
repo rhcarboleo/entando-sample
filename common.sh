@@ -87,7 +87,7 @@ EOF
 }
 function import_entando_image_streams(){
     echo_header "Importing Entando Image Streams"
-    IMAGES=("app-builder-openshift" "entando-postgresql95-openshift" "entando-wildfly12-openshift" \
+    IMAGES=("app-builder-openshift" "entando-postgresql95-openshift" "entando-wildfly12-quickstart-openshift" \
             "entando-eap71-openshift" "entando-tomcat8-openshift" "nexus-with-entando-dependencies")
     for IMAGE in "${IMAGES[@]}"
     do
