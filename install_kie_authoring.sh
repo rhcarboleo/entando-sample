@@ -37,7 +37,7 @@ function create_kie_application() {
     oc delete services "$APPLICATION_NAME-rhpamcentr" 2> /dev/null
     oc delete services "$APPLICATION_NAME-kieserver" 2> /dev/null
     oc delete routes "$APPLICATION_NAME-rhpamcentr" 2> /dev/null
-oc delete routes "secure-$APPLICATION_NAME-rhpamcentr" 2> /dev/null
+    oc delete routes "secure-$APPLICATION_NAME-rhpamcentr" 2> /dev/null
     oc delete routes "$APPLICATION_NAME-kieserver" 2> /dev/null
     oc delete routes "secure-$APPLICATION_NAME-kieserver" 2> /dev/null
     oc delete deploymentconfigs "$APPLICATION_NAME-rhpamcentr" 2> /dev/null

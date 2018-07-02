@@ -5,5 +5,5 @@ oc process -f ~/Code/entando/entando-ops/Openshift/templates/entando-wildfly12-q
  -p KIE_SERVER_BASE_URL=http://pam-kieserver-pam.192.168.42.117.nip.io/ \
  -p KIE_SERVER_USERNAME=ampie \
  -p KIE_SERVER_PASSWORD=P@ssword \
- -p IMAGE_STREAM_NAMESPACE=entando-sample-project \
+ -p IMAGE_STREAM_NAMESPACE=myproject \
  | oc create -f -
