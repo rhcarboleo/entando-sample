@@ -1,5 +1,5 @@
 eval $(minishift docker-env)
-IMAGES=( "ampie/entando-wildfly12-quickstart-openshift" "entando/app-builder-openshift" )
+IMAGES=( "ampie/entando-eap71-quickstart-openshift" "entando/app-builder-openshift" )
 for IMAGE in "${IMAGES[@]}"
 do
   echo "Pulling image $IMAGE:5.0.1"

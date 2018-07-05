@@ -2,8 +2,9 @@
 export ENTANDO_OPS_HOME=~/Code/entando/entando-ops
 #Best guess for development
 export STAGE=dev
-
 export OPENSHIFT_PROJECT=$(cat src/main/filters/stage/$STAGE.properties | grep -oP "(?<=profile\.openshift\.project\=).+$")
+echo ${OPENSHIFT_PROJECT}
+
 function apply_maven_filters(){
    #Clean the project and regenerates all resources that use filters, typically just before an Openshift binary build
    echo_header "Applying the maven filters for profile $1"
@@ -45,55 +46,6 @@ function calculate_mirror_url(){
         NEXUS_URL="http://$NEXUS_URL/repository/maven-public"
     fi
     echo $NEXUS_URL
-}
-
-function recreate_secrets_and_linked_service_accounts() {
-#only for use on a development machine. In SIT/PROD we would probably prefer to manage the secrets separately
-    echo_header "Creating Entando keystore secret."
-    oc delete secret entando-app-secret 2> /dev/null
-    oc delete sa entando-service-account 2> /dev/null
-    oc process -f $ENTANDO_OPS_HOME/Openshift/templates/entando-app-secret.yml -p SECRET_NAME=entando-app-secret | oc create -f -
-#Ampie: Some voodoo repeat here. Figure out why we're doing this
-    oc create serviceaccount entando-service-account
-    sleep 0.5
-    oc secrets link --for=mount entando-service-account entando-app-secret
-
-    echo_header "Creating Postgresql secret."
-    oc delete secret "$(get_property application.name)-db-secret" 2> /dev/null
-    cat <<EOF | oc create -f -
-apiVersion: v1
-kind: Secret
-metadata:
-  name: "$(get_property application.name)-db-secret"
-stringData:
-  jdbcUrl: "jdbc:postgresql://$(get_property application.name)-postgresql.${OPENSHIFT_PROJECT}.svc:5432/"
-  username: "$(get_property database.username)"
-  password: "$(get_property database.password)"
-EOF
-    echo "password=$(get_property database.password)"
-    echo_header "Creating KIEServer secret."
-    oc delete secret "$(get_property application.name)-kieserver-secret" 2> /dev/null
-    cat <<EOF | oc create -f -
-apiVersion: v1
-kind: Secret
-metadata:
-  name: "$(get_property application.name)-kieserver-secret"
-stringData:
-  url: "http://$(get_property application.name)-kieserver.${OPENSHIFT_PROJECT}.svc:8080"
-  username: "$(get_property kieserver.username)"
-  password: "$(get_property kieserver.password)"
-EOF
-
-}
-function import_entando_image_streams(){
-    echo_header "Importing Entando Image Streams"
-    IMAGES=("app-builder-openshift" "entando-postgresql95-openshift" "entando-wildfly12-quickstart-openshift" \
-            "entando-eap71-openshift" "entando-tomcat8-openshift" "nexus-with-entando-dependencies")
-    for IMAGE in "${IMAGES[@]}"
-    do
-        oc delete is $IMAGE 2> /dev/null
-        oc create -f $ENTANDO_OPS_HOME/Openshift/image-streams/$IMAGE.json
-    done
 }
 
 function get_openshift_subdomain(){

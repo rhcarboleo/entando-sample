@@ -32,7 +32,7 @@
       </activation>
       <properties>
         <env.db.environment>develop</env.db.environment>
-        <server>wildfly</server>
+        <server>eap</server>
         <database>derby</database>
       </properties>
     </profile>
