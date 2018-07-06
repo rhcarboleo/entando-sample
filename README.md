@@ -1,8 +1,8 @@
-#Overview
+# Overview
 
 This sample project illustrates how Entando can work with the Entando JBoss EAP Quickstart Openshift Template. It requires a basic knowledge of Openshift, and would work best on an existing installation of Minishift.
 
-#Instructions:
+# Instructions:
 
 Please follow these instructions carefully and in the correct sequence. We also advise you to follow the 
 progress of deployments on the Openshift browser console and only progress to the next step once the newly instantiated
@@ -22,6 +22,6 @@ Openshift browser console until all deployments are in READY state.
 7. Once all deployments are in READY state, navigate to the Routes section, and click on the HTTP (non-secure) route of the AppBuilder service. 
 This will take you to the Entando AppBuilder browser App. You can login with the user **admin** using the password **adminadmin**
 
-##TODO
+# TODO
 
 1. Add instructions
