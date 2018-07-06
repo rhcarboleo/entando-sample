@@ -29,7 +29,7 @@ function recreate_secrets_and_linked_service_accounts() {
 function recreate_kie_application() {
     echo_header "Creating Process Automation Manager 7 Application config."
     APPLICATION_NAME="pam"
-    DOMAIN_SUFFIX=get_openshift_subdomain
+    DOMAIN_SUFFIX=$(get_openshift_subdomain)
     oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/7.0.0.GA/templates/rhpam70-authoring.yaml \
             -p APPLICATION_NAME="$APPLICATION_NAME" \
             -p BUSINESS_CENTRAL_HTTPS_SECRET=businesscentral-app-secret \
@@ -43,7 +43,7 @@ function recreate_kie_application() {
             -p KIE_SERVER_USER="ampie" \
             -p KIE_SERVER_PWD="P@ssword" \
             -p BUSINESS_CENTRAL_MEMORY_LIMIT="2Gi" \
-            -p EXECUTION_SERVER_HOSTNAME_HTTP="http://pam-kieserver-$OPENSHIFT_PROJECT.$DOMAIN_SUFFIX/" \
+            -p EXECUTION_SERVER_HOSTNAME_HTTP="pam-kieserver-$OPENSHIFT_PROJECT.$DOMAIN_SUFFIX" \
             | oc replace --force --grace-period 60  -f -
 
 }

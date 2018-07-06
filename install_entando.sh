@@ -10,7 +10,7 @@ function recreate_entando_image_streams(){
     done
 }
 function recreate_entando_app(){
-  DOMAIN_SUFFIX=get_openshift_subdomain
+  DOMAIN_SUFFIX=$(get_openshift_subdomain)
   oc process -f $ENTANDO_OPS_HOME/Openshift/templates/entando-eap71-quickstart.yml \
    -p ENTANDO_RUNTIME_HOSTNAME_HTTP=entando-runtime.$DOMAIN_SUFFIX \
    -p ENTANDO_APP_BUILDER_HOSTNAME_HTTP=appbuilder.$DOMAIN_SUFFIX \
