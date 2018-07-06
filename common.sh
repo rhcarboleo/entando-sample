@@ -1,23 +1,7 @@
 #!/usr/bin/env bash
-export ENTANDO_OPS_HOME=~/Code/entando/entando-ops
-#Best guess for development
-export STAGE=dev
-export OPENSHIFT_PROJECT=$(cat src/main/filters/stage/$STAGE.properties | grep -oP "(?<=profile\.openshift\.project\=).+$")
-echo ${OPENSHIFT_PROJECT}
+export ENTANDO_OPS_HOME=https://raw.githubusercontent.com/entando/entando-ops/EN-1541
+export OPENSHIFT_PROJECT=entando-sample
 
-function apply_maven_filters(){
-   #Clean the project and regenerates all resources that use filters, typically just before an Openshift binary build
-   echo_header "Applying the maven filters for profile $1"
-   #openshift.subdomain can be unset in SIT and PROD without breaking anything
-   mvn clean process-resources -P$1 -Dopenshift.subdomain=$(get_openshift_subdomain)
-}
-
-function generate_expanded_properties_file(){
-   echo_header "Generating properties files for profile $1"
-   #ONLY regenerates the expanded properties file
-   #openshift.subdomain can be unset in SIT and PROD without breaking anything
-   mvn resources:copy-resources@generate-filter-properties -P$1 -Dopenshift.subdomain=$(get_openshift_subdomain)
-}
 function get_property {
     echo "$(cat $(dirname $0)/target/all-filters/all-filters.properties | grep -oP "(?<=^profile\.$1\=).+$")"
 }
