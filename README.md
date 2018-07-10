@@ -24,4 +24,5 @@ This will take you to the Entando AppBuilder browser App. You can login with the
 
 # TODO
 
-1. Add instructions
+1. Add instructions to overcome bugs in Minishift (e.g. absent Redhat Registry certs, absent admin account)
+2. Add instructions and script to start build from command line
