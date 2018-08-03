@@ -1,4 +1,0 @@
-<jboss-web>
-    <context-root>${profile.application.name}</context-root>
-
-</jboss-web>
