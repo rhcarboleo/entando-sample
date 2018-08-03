@@ -97,16 +97,20 @@
         <!-- Added for openshift-->
         <profile>
             <id>openshift</id>
-            <activation>
-                <property>
-                    <name>env.MAVEN_WORKING_MODE</name>
-                    <value>production-jboss</value>
-                </property>
-            </activation>
             <properties>
                 <env>production-jboss</env>
                 <env.db.environment>production</env.db.environment>
                 <jboss>jboss</jboss>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>openshift-postgresql</id>
+            <properties>
+                <jettyScannedJars>none</jettyScannedJars>
+                <env>production-jboss</env>
+                <env.db.environment>development-unix</env.db.environment>
+                <jboss></jboss>
             </properties>
         </profile>
 
@@ -145,6 +149,7 @@
         <spring.version>5.0.5.RELEASE</spring.version>
         <struts2.version>2.5.10.1</struts2.version>
         <cxf.version>3.0.4</cxf.version>
+        <jettyScannedJars>.*jar</jettyScannedJars>
     </properties>
     <build>
         <finalName>entando-sample</finalName>
@@ -592,6 +597,7 @@
                     <scanIntervalSeconds>5</scanIntervalSeconds>
                     <webAppSourceDirectory>${basedir}/src/main/webapp</webAppSourceDirectory>
                     <webApp>
+                        <webInfIncludeJarPattern>${jettyScannedJars}</webInfIncludeJarPattern><!--required to bypass annotation scanning that is timing out-->
                         <defaultsDescriptor>${basedir}/src/main/config/webdefault.xml</defaultsDescriptor>
                         <contextPath>/${project.artifactId}</contextPath>
                         <jettyEnvXml>${project.build.directory}/jetty/jetty-env.xml</jettyEnvXml>
