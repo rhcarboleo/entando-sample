@@ -104,17 +104,6 @@
             </properties>
         </profile>
 
-        <profile>
-            <id>openshift-postgresql</id>
-            <properties>
-                <jettyScannedJars>none</jettyScannedJars>
-                <env>development-unix</env>
-                <env.db.environment>production</env.db.environment>
-                <jboss></jboss>
-            </properties>
-        </profile>
-
-
     </profiles>
     <properties>
         <!--
