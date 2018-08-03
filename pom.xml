@@ -108,8 +108,8 @@
             <id>openshift-postgresql</id>
             <properties>
                 <jettyScannedJars>none</jettyScannedJars>
-                <env>production-jboss</env>
-                <env.db.environment>development-unix</env.db.environment>
+                <env>development-unix</env>
+                <env.db.environment>production</env.db.environment>
                 <jboss></jboss>
             </properties>
         </profile>
